@@ -5,6 +5,11 @@ import numpy as np
 import time
 
 entrenamientos_dir = 'entrenamientos'
+UMBRAL_TEXTURA = 85.0
+
+def is_screen(face_gray):
+    laplacian_var = cv2.Laplacian(face_gray, cv2.CV_64F).var()
+    return laplacian_var < UMBRAL_TEXTURA, laplacian_var
 
 if len(sys.argv) > 1:
     modelo_seleccionado = sys.argv[1]
@@ -147,6 +152,15 @@ while True:
 
         # Usamos la imagen en escala de grises para extraer el rostro (igual que en el entrenamiento)
         rostro = gray[y:y+h, x:x+w]
+                
+        # Evaluamos si el rostro es una pantalla (baja textura) para descartar intentos de spoofing con fotos o videos
+        es_pantalla, textura = is_screen(rostro)
+        if es_pantalla:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 165, 255), 2)
+            cv2.putText(frame, 'Deteccion Invalidada', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 165, 255), 2)
+            cv2.rectangle(frame, (10, 5), (550, 25), (0, 165, 255), -1)
+            cv2.putText(frame, f'Aviso: Posible manipulacion (Pantalla detectada))')
+
         rostro = cv2.resize(rostro, (150, 150), interpolation=cv2.INTER_CUBIC)
         
         # Realizar predicción
