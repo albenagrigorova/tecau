@@ -160,6 +160,7 @@ while True:
             cv2.putText(frame, 'Deteccion Invalidada', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 165, 255), 2)
             cv2.rectangle(frame, (10, 5), (550, 25), (0, 165, 255), -1)
             cv2.putText(frame, f'Aviso: Posible manipulacion (Pantalla detectada))')
+            continue
 
         rostro = cv2.resize(rostro, (150, 150), interpolation=cv2.INTER_CUBIC)
         
