@@ -15,7 +15,7 @@ Write-Host "Ejecutando captura de caras..." -ForegroundColor Cyan
 python captura-caras.py
 
 Write-Host "Ejecutando el entrenamiento..." -ForegroundColor Cyan
-python entrenamiento.py
+python entrena.py
 
 Write-Host "Ejecutando prueba de reconocimiento..." -ForegroundColor Cyan
 python reconoce.py
